@@ -1,0 +1,54 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+# HARD dependency: tier state lives in Iron's `irons_spellbooks:upgrade_data` component and our
+# tiers are entries in Iron's `irons_spellbooks:upgrade_orb_type` datapack registry. AFTER ordering
+# so that registry exists (DataPackRegistryEvent) before our datapack entries are parsed.
+#
+# Iron's versions itself `<mc>-<mod>` ("1.21.1-3.16.0"), which Maven reads with 1.21.1 as the major
+# component - a plain "[3.16.0,)" therefore never matches and the mod refuses to load. The range
+# has to be written in their scheme.
+[[dependencies.${mod_id}]]
+modId="irons_spellbooks"
+type="required"
+versionRange="[1.21.1-3.16.0,)"
+ordering="AFTER"
+side="BOTH"
+
+# The weapons we gate on. Both only supply item tags that our `upgradable_weapons` tag folds in
+# with required=false, so neither is needed for the mod to load.
+[[dependencies.${mod_id}]]
+modId="simplyswords"
+type="optional"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="simplymore"
+type="optional"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

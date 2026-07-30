@@ -1,0 +1,93 @@
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.134'
+}
+
+version = mod_version
+group = mod_group_id
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = "https://api.modrinth.com/maven" }
+}
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+        // Headless GameTest run: `gradlew runGameTestServer` boots a dedicated server,
+        // executes every @GameTest in the mod and exits non-zero if any of them fail.
+        gameTestServer {
+            type = "gameTestServer"
+        }
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    // Iron's Spells 'n Spellbooks is a HARD dependency at runtime (see neoforge.mods.toml): this mod
+    // stores its tier state in Iron's `upgrade_data` component and its `upgrade_orb_type` datapack
+    // registry. compileOnly because the pack always ships Iron's - we never bundle it.
+    compileOnly "maven.modrinth:irons-spells-n-spellbooks:${irons_version}"
+
+    // Pure-logic unit tests. TierState is deliberately free of Minecraft types so it can be
+    // exercised off-game; the ring/conversion arithmetic is the part worth pinning down.
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [minecraft_version      : minecraft_version,
+                             minecraft_version_range: minecraft_version_range,
+                             neo_version            : neo_version,
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
+                             mod_id                 : mod_id,
+                             mod_name               : mod_name,
+                             mod_license            : mod_license,
+                             mod_version            : mod_version,
+                             mod_authors            : mod_authors,
+                             mod_description        : mod_description]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata

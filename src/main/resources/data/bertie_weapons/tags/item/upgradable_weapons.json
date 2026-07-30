@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "#simplyswords:lootable_uniques", "required": false },
+    { "id": "#simplyswords:conditional_uniques_type_2", "required": false },
+    { "id": "#simplymore:uniques", "required": false }
+  ]
+}
