@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The whole progression rule set, expressed without a single Minecraft type so it can be unit
+ * The weapon-tier rule set, expressed without a single Minecraft type so it can be unit
  * tested off-game. Everything the mod does to a weapon is one of the transitions below.
  *
  * <p>Two independent tracks:
