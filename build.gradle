@@ -58,6 +58,19 @@ dependencies {
     // registry. compileOnly because the pack always ships Iron's - we never bundle it.
     compileOnly "maven.modrinth:irons-spells-n-spellbooks:${irons_version}"
 
+    // The production pack supplies these jars. Gradle development runs do not, so declare the
+    // exact pack closure for runGameTestServer instead of making shared CI know this mod's graph.
+    runtimeOnly "maven.modrinth:irons-spells-n-spellbooks:${irons_version}"
+    runtimeOnly "maven.modrinth:curios:${curios_version}"
+    runtimeOnly "maven.modrinth:geckolib:${geckolib_version}"
+    runtimeOnly "maven.modrinth:irons-lib:${irons_lib_version}"
+    runtimeOnly "maven.modrinth:playeranimator:${playeranimator_version}"
+    runtimeOnly "maven.modrinth:simply-swords:${simply_swords_version}"
+    runtimeOnly "maven.modrinth:fzzy-config:${fzzy_config_version}"
+    runtimeOnly "maven.modrinth:kotlin-for-forge:${kotlin_for_forge_version}"
+    runtimeOnly "maven.modrinth:simply-tooltips:${simply_tooltips_version}"
+    runtimeOnly "maven.modrinth:architectury-api:${architectury_version}"
+
     // Pure-logic unit tests. TierState is deliberately free of Minecraft types so it can be
     // exercised off-game; the ring/conversion arithmetic is the part worth pinning down.
     testImplementation platform('org.junit:junit-bom:6.1.2')

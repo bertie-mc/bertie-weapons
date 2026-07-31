@@ -6,6 +6,7 @@ out/
 # --- Run directories ---
 run/
 runs/
+.bertie-ci/
 
 # --- IDE ---
 .idea/
