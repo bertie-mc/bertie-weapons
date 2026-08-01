@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Development has moved to [`bertie-mc/bertie`](https://github.com/bertie-mc/bertie/tree/main/mods/bertie-weapons). This repository is retained read-only for historical tags, releases, and issues.
+
 # Bertie Weapons (`bertie_weapons`)
 
 Tiered, non-destructive weapon empowerment for the **bertie** modpack. NeoForge 1.21.1.
