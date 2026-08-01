@@ -118,8 +118,9 @@ registry picks them up for free**.
 `gradle test` — 8 unit tests over `TierState` (cap behaviour, ring closure, per-tier uniqueness,
 track independence, and that growing the ring raises the cost without code changes).
 
-`gradle runGameTestServer` — 10 GameTests against a real server with Iron's + Simply Swords +
-SimplyMore loaded. These cover the parts that only exist at runtime:
+`gradle runGameTestServer` — 10 GameTests from the test-only `gameTest` source set against a
+real server with Iron's and Simply Swords loaded. The test classes and `empty.nbt` fixture are
+excluded from releases. These cover the parts that only exist at runtime:
 
 - both `upgrade_orb_type` JSON files parsed; the 8-element ring resolves
 - one stat tier produces exactly `+0.20 ADD_MULTIPLIED_BASE` attack damage **through Iron's real
@@ -133,9 +134,8 @@ SimplyMore loaded. These cover the parts that only exist at runtime:
 - weapon + fire orb matches; weapon + **cooldown** orb (a real orb outside the ring) does not
 - non-unique and vanilla weapons are not upgradable
 
-The GameTest run needs Iron's and its dependency chain in `run/mods/` (gitignored): Iron's,
-`irons_lib`, geckolib, curios, player-animation-lib, Simply Swords, SimplyMore, SimplyTooltips,
-`fzzy_config`, kotlinforforge, architectury, cloth-config.
+Gradle resolves the exact runtime-only dependency closure used by the GameTest run; no jars need
+to be copied into `run/mods/`.
 
 ---
 

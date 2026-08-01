@@ -47,6 +47,8 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+val gameTest = sourceSets.create("gameTest")
+
 neoForge {
     version = neo_version
 
@@ -62,8 +64,6 @@ neoForge {
         register("server") {
             server()
         }
-        // Headless GameTest run: `gradle runGameTestServer` boots a dedicated server,
-        // executes every @GameTest in the mod and exits non-zero if any of them fail.
         register("gameTestServer") {
             type = "gameTestServer"
         }
@@ -76,9 +76,15 @@ neoForge {
     mods {
         register(mod_id) {
             sourceSet(sourceSets.main.get())
+            sourceSet(gameTest)
         }
     }
+
+    addModdingDependenciesTo(gameTest)
 }
+
+gameTest.compileClasspath += sourceSets.main.get().output + sourceSets.main.get().compileClasspath
+gameTest.runtimeClasspath += sourceSets.main.get().output + sourceSets.main.get().runtimeClasspath
 
 dependencies {
     // Iron's Spells 'n Spellbooks is a HARD dependency at runtime (see neoforge.mods.toml): this mod
@@ -99,8 +105,6 @@ dependencies {
     runtimeOnly("maven.modrinth:simply-tooltips:$simply_tooltips_version")
     runtimeOnly("maven.modrinth:architectury-api:$architectury_version")
 
-    // Pure-logic unit tests. TierState is deliberately free of Minecraft types so it can be
-    // exercised off-game; the ring/conversion arithmetic is the part worth pinning down.
     testImplementation(platform("org.junit:junit-bom:6.1.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

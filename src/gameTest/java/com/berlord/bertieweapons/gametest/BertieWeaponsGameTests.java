@@ -1,6 +1,7 @@
 package com.berlord.bertieweapons.gametest;
 
 import com.berlord.bertieweapons.Config;
+import com.berlord.bertieweapons.BertieWeapons;
 import com.berlord.bertieweapons.logic.TierState;
 import com.berlord.bertieweapons.logic.WeaponUpgrades;
 import io.redspace.ironsspellbooks.api.item.UpgradeData;
@@ -27,6 +28,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 
 /**
  * Integration proof against a real server: real registries, the real datapack entries this mod
@@ -39,10 +43,16 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
  */
 @GameTestHolder("bertie_weapons")
 @PrefixGameTestTemplate(false)
+@EventBusSubscriber(modid = BertieWeapons.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class BertieWeaponsGameTests {
     private static final String TEMPLATE = "empty";
 
     private BertieWeaponsGameTests() {}
+
+    @SubscribeEvent
+    public static void register(RegisterGameTestsEvent event) {
+        event.register(BertieWeaponsGameTests.class);
+    }
 
     /** A Simply Swords unique, which is what {@code #bertie_weapons:upgradable_weapons} covers. */
     private static ItemStack weapon(GameTestHelper helper) {
