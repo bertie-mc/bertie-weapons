@@ -115,10 +115,10 @@ registry picks them up for free**.
 
 ## Verification
 
-`gradlew test` — 8 unit tests over `TierState` (cap behaviour, ring closure, per-tier uniqueness,
+`gradle test` — 8 unit tests over `TierState` (cap behaviour, ring closure, per-tier uniqueness,
 track independence, and that growing the ring raises the cost without code changes).
 
-`gradlew runGameTestServer` — 10 GameTests against a real server with Iron's + Simply Swords +
+`gradle runGameTestServer` — 10 GameTests against a real server with Iron's + Simply Swords +
 SimplyMore loaded. These cover the parts that only exist at runtime:
 
 - both `upgrade_orb_type` JSON files parsed; the 8-element ring resolves
